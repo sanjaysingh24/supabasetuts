@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from "@/components/ui/toast"
 
 
-export const EmailMagiclogin = () => {
+export const Phonesignin = () => {
     const {toast} = useToast();
     type FormData={
       email:string
@@ -20,7 +20,7 @@ const handlemagiclink= async(e)=>{
   
     try{
       let {data, error } = await supabase.auth.signInWithOtp({
-        email: datas
+        phone: '+918449305991'
       })
       if(data){
         toast({title:"Successfully send the link to the give email"})

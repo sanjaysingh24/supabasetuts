@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label'
 import supabase from '@/Configuration/config';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from "@/components/ui/toast"
-export const EmailSignup = () => {
+export const Phonesignup = () => {
     const {toast} = useToast();
     type FormData = {
         email: string,
@@ -21,45 +21,26 @@ export const EmailSignup = () => {
           return { ...prev, [name]: value };
         });
       }
-      const handlesignup = async (e) => {
+      const handlesignup=async(e)=>{
         e.preventDefault();
-        try {
-          const { data, error } = await supabase.auth.signUp({
-            email: formdata.email,
-            password: formdata.Password,
-          });
-      
-          if (error) {
-            // Check if the error is specifically about the email being already registered
-            if (error.message.includes('email already exists')) {
-              toast({
-                title: 'User already registered',
-                description: 'This email is already registered. Please login instead.',
-              });
-              console.log('User already registered:', formdata.email);
-            } else {
-              toast({
-               
-                description: error?.message,
-              });
+        try{
+          const {data,error} = await supabase.auth.signUp({
+            phone:formdata.email,
+            password:formdata.Password
+          })
+          //set the mobile number to the local storage
+          let mobile = localStorage.setItem("phone",formdata.email);
+           if(error){
             
-            }
-            return; // Stop further execution if there's an error
-          }
+            toast({title:"An error occur",description:"error during sign up"}) 
       
-          if (data) {
-            toast({
-              title: 'Successfully Signed Up',
-              
-            });
-     
-          }
-        } catch (err) {
+           }
+           if(data){
+            console.log(data);
+        toast({title:"Successfully Sign up"})
+           }
+        }catch(err){
           console.log(err);
-          toast({
-            title: 'Unexpected error',
-            description: 'Something went wrong. Please try again later.',
-          });
         }
         setData({
           email:"",
@@ -68,13 +49,13 @@ export const EmailSignup = () => {
       }
   return (
     <div className="w-full  py-7 px-10 shadow hover:shadow-lg rounded-xl bg-white transition-all">
-            <h4 className='text-center font-semibold'>User SignUp Using Email and Password </h4>
+            <h4 className='text-center font-semibold'> SignUp with  number and  Password </h4>
             <form >
-              <Label htmlFor="email" className="block text-lg font-medium">Email</Label>
+              <Label htmlFor="email" className="block text-lg font-medium">Phone Number</Label>
               <Input
-                type='email'
+                type='text'
                 className="mt-2 w-full"
-                placeholder="Enter your Email"
+                placeholder="Enter your Mobile (+91) is mandotary"
                 onChange={handleChange}
                 name="email"
                 value={formdata?.email}
